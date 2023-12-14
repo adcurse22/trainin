@@ -1,0 +1,55 @@
+version: '3.10'
+
+services:
+  postgres_db:
+    image: postgres:12
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${SQL_USER}
+      POSTGRES_PASSWORD: ${SQL_PASSWORD}
+      POSTGRES_DB: ${SQL_DATABASE}
+    container_name: training_test
+  web:
+    build: .
+    volumes:
+      - ./static:/training/static/
+      - ./media:/training/media/
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres_db
+    container_name: web
+    env_file:
+      - .env
+
+  nginx:
+    image: linuxserver/swag
+    restart: always
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Dubai
+      - URL=training-bc.com
+      - SUBDOMAINS=api
+      - VALIDATION=http
+      - ONLY_SUBDOMAINS=true
+      - STAGING=true
+    depends_on:
+      - web
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/default.conf.sample:/etc/nginx/http.d/default.conf.sample
+      - ./media:/usr/media/
+      - lets:/config/keys/
+      - ./static:/usr/static/
+
+volumes:
+  postgres_data:
+  lets:

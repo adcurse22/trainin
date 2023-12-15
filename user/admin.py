@@ -1,3 +1,6 @@
 from django.contrib import admin
-
-# Register your models here.
+from .models import Category,Exercise,Nutrition,Feedback
+admin.site.register(Category)
+admin.site.register(Exercise)
+admin.site.register(Nutrition)
+admin.site.register(Feedback)

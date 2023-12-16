@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
-
+import datetime
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         """
@@ -30,9 +30,9 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     email = models.EmailField(verbose_name='email address', max_length=255, unique=True)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
+    is_active = models.BooleanField('активный',default=True)
+    is_staff = models.BooleanField('сотрудник',default=False)
+    is_superuser = models.BooleanField('СуперПользователь',default=False)
 
     objects = UserManager()
 
@@ -54,35 +54,50 @@ class User(AbstractBaseUser):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
+    name = models.CharField('Название',max_length=100)
+    description = models.TextField('Описание')
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
 
     def __str__(self):
         return self.name
 
 class Exercise(models.Model):
     category = models.ForeignKey(Category, related_name='exercises', on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    description = models.TextField()
+    name = models.CharField('Название',max_length=100)
+    description = models.TextField('Описание')
     photo = models.ImageField(upload_to='exercises/')
-    day = models.IntegerField()  # День в программе упражнений
+    day = models.IntegerField('Дата')  # День в программе упражнений
 
+    class Meta:
+        verbose_name = 'Упражнение'
+        verbose_name_plural = 'Упражнения'
     def __str__(self):
         return self.name
+
+from django.db import models
 
 class Nutrition(models.Model):
-    exercise = models.ForeignKey(Exercise, related_name='nutrition', on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    photo = models.ImageField(upload_to='nutrition/')
+    name = models.CharField('Название', max_length=100)
+    description = models.TextField('Описание', blank=True, null=True)
+    photo = models.ImageField('Фото', upload_to='nutritions/', blank=True, null=True)
+    date = models.DateField('Дата')
+
+    class Meta:
+        verbose_name = 'Питание'
+        verbose_name_plural = 'Питания'
 
     def __str__(self):
         return self.name
+
 
 
 class Feedback(models.Model):
-    email = models.EmailField()
-    message = models.TextField()
+    email = models.EmailField('Электронная почта')
+    message = models.TextField('Сообщение')
 
+    class Meta:
+        verbose_name = 'обратная связь'
     def __str__(self):
         return f"Feedback from {self.email}"

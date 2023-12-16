@@ -20,7 +20,7 @@ services:
       - ./static:/training/static/
       - ./media:/training/media/
     ports:
-      - "8000:8000"
+      - "8000:8000"l
     depends_on:
       - postgres_db
     container_name: web

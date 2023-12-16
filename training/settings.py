@@ -95,12 +95,8 @@ WSGI_APPLICATION = 'training.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('SQL_DATABASE', default='postgres'),
-        'USER': config('SQL_USER', default='postgres'),
-        'PASSWORD': config('SQL_PASSWORD', default='password'),
-        'HOST': config('SQL_HOST', default='postgres_db'),
-        'PORT': config('SQL_PORT', default=5432, cast=int),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

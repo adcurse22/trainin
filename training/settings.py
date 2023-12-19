@@ -62,12 +62,10 @@ ROOT_URLCONF = 'training.urls'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-CORS_ALLOWED_ORIGINS = [
-    "https://example.com",
-    "https://sub.example.com",
-    "http://localhost:8000",
-    "http://127.0.0.1:9000",
-    "http://localhost:3000"
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost',
+    'http://localhost:8000',
+    'http://aocurse.pythonanywhere.com'
 ]
 
 TEMPLATES = [
@@ -162,3 +160,5 @@ DJOSER = {
         'user': 'djoser.serializers.UserSerializer',
     },
 }
+
+AUTH_USER_MODEL = 'user.User'

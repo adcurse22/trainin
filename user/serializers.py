@@ -4,6 +4,11 @@ from .models import Category, Exercise, Nutrition,Feedback
 
 User = get_user_model()
 
+from django.contrib.auth import get_user_model
+from rest_framework import serializers
+
+User = get_user_model()
+
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -11,10 +16,12 @@ class UserCreateSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        user = User.objects.create_user(email=validated_data['email'])
-        user.set_password(validated_data['password'])
-        user.save()
+        user = User.objects.create_user(
+            email=validated_data['email'],
+            password=validated_data['password']
+        )
         return user
+
 
 
 

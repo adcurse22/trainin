@@ -153,11 +153,12 @@ REST_FRAMEWORK = {
 }
 
 DJOSER = {
-    'LOGIN_FIELD': 'email',
-    'USER_CREATE_PASSWORD_RETYPE': True,
+    'SEND_ACTIVATION_EMAIL': False,
     'SERIALIZERS': {
-        'user_create': 'user.serializers.UserCreateSerializer',
-        'user': 'djoser.serializers.UserSerializer',
+        'user_create': 'user.serializers.UserEditSerializer',
+        'user': 'user.serializers.UserEditSerializer',
+        'current_user': 'user.serializers.UserEditSerializer',
+        'token_create': 'djoser.serializers.TokenCreateSerializer',
     },
 }
 
